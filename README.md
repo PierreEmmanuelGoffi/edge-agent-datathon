@@ -25,7 +25,13 @@
 
 ### Setup
 
-1. Set up environment variables:
+1. Install the required packages using requirements.txt:
+
+   ```sh
+   pip install -r requirements.txt
+   ```
+
+2. Set up environment variables:
    Create a `.env` file in the project root and add the following environment variables:
    ```env
    SERPER_API_KEY=your_serper_api_key

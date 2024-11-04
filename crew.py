@@ -9,29 +9,49 @@ from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
 
 
-
-
 # Environment Variables
 load_dotenv()
 os.environ["SERPER_API_KEY"] = os.getenv("SERPER_API_KEY")
+os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
+os.environ["GROQ_API_KEY"] = os.getenv("GROQ_API_KEY")
+
 
 # Model Selection
-def initialize_llm(model_option, openai_api_key, groq_api_key):
-    if model_option == 'OpenAI GPT-4o':
-        return ChatOpenAI(openai_api_key=openai_api_key, model='gpt-4o', temperature=0.1)
-    elif model_option == 'OpenAI GPT-4o Mini':
-        return ChatOpenAI(openai_api_key=openai_api_key, model='gpt-4o-mini', temperature=0.1)
-    elif model_option == 'Llama 3 8B':
-        return ChatGroq(groq_api_key=groq_api_key, model='llama3-8b-8192', temperature=0.1)
-    elif model_option == 'Llama 3.1 70B':
-        return ChatGroq(groq_api_key=groq_api_key, model='llama-3.1-70b-versatile', temperature=0.1)
-    elif model_option == 'Llama 3.1 8B':
-        return ChatGroq(groq_api_key=groq_api_key, model='llama-3.1-8b-instant', temperature=0.1)
+def initialize_llm(model_option):
+    if model_option == "Claude Sonnet 3.0":
+        return ChatOpenAI(
+            openai_api_key=os.environ["OPENAI_API_KEY"], model="gpt-4o", temperature=0.1
+        )
+    elif model_option == "OpenAI GPT-4o Mini":
+        return ChatOpenAI(
+            openai_api_key=os.environ["OPENAI_API_KEY"],
+            model="gpt-4o-mini",
+            temperature=0.1,
+        )
+    elif model_option == "Llama 3 8B":
+        return ChatGroq(
+            groq_api_key=os.environ["GROQ_API_KEY"],
+            model="llama3-8b-8192",
+            temperature=0.1,
+        )
+    elif model_option == "Llama 3.1 70B":
+        return ChatGroq(
+            groq_api_key=os.environ["GROQ_API_KEY"],
+            model="llama-3.1-70b-versatile",
+            temperature=0.1,
+        )
+    elif model_option == "Llama 3.1 8B":
+        return ChatGroq(
+            groq_api_key=os.environ["GROQ_API_KEY"],
+            model="llama-3.1-8b-instant",
+            temperature=0.1,
+        )
     else:
         raise ValueError("Invalid model option selected")
 
-def create_crew(stock_symbol, model_option, openai_api_key, groq_api_key):
-    llm = initialize_llm(model_option, openai_api_key, groq_api_key)
+
+def create_crew(stock_symbol, model_option):
+    llm = initialize_llm(model_option)
     # Tools Initialization
     serper_tool = SerperDevTool()
     yf_tech_tool = yf_tech_analysis
@@ -39,43 +59,43 @@ def create_crew(stock_symbol, model_option, openai_api_key, groq_api_key):
 
     # Agents Definitions
     researcher = Agent(
-        role='Senior Stock Market Researcher',
-        goal='Gather and analyze comprehensive data about {stock_symbol}',
+        role="Senior Stock Market Researcher",
+        goal="Gather and analyze comprehensive data about {stock_symbol}",
         verbose=True,
         memory=True,
         backstory="With a Ph.D. in Financial Economics and 15 years of experience in equity research, you're known for your meticulous data collection and insightful analysis.",
-        tools=[ serper_tool, YahooFinanceNewsTool()],
-        llm=llm
+        tools=[serper_tool, YahooFinanceNewsTool()],
+        llm=llm,
     )
 
     technical_analyst = Agent(
-        role='Expert Technical Analyst',
-        goal='Perform an in-depth technical analysis on {stock_symbol}',
+        role="Expert Technical Analyst",
+        goal="Perform an in-depth technical analysis on {stock_symbol}",
         verbose=True,
         memory=True,
         backstory="As a Chartered Market Technician (CMT) with 15 years of experience, you have a keen eye for chart patterns and market trends.",
         tools=[yf_tech_tool],
-        llm=llm
+        llm=llm,
     )
 
     fundamental_analyst = Agent(
-        role='Senior Fundamental Analyst',
-        goal='Conduct a comprehensive fundamental analysis of {stock_symbol}',
+        role="Senior Fundamental Analyst",
+        goal="Conduct a comprehensive fundamental analysis of {stock_symbol}",
         verbose=True,
         memory=True,
         backstory="With a CFA charter and 15 years of experience in value investing, you dissect financial statements and identify key value drivers.",
         tools=[yf_fundamental_tool],
-        llm=llm
+        llm=llm,
     )
 
     reporter = Agent(
-        role='Chief Investment Strategist',
-        goal='Synthesize all analyses to create a definitive investment report on {stock_symbol}',
+        role="Chief Investment Strategist",
+        goal="Synthesize all analyses to create a definitive investment report on {stock_symbol}",
         verbose=True,
         memory=True,
         backstory="As a seasoned investment strategist with 20 years of experience, you weave complex financial data into compelling investment narratives.",
-        tools=[ serper_tool, yf_fundamental_tool, yf_tech_tool, YahooFinanceNewsTool()],
-        llm=llm
+        tools=[serper_tool, yf_fundamental_tool, yf_tech_tool, YahooFinanceNewsTool()],
+        llm=llm,
     )
 
     # Task Definitions
@@ -90,8 +110,8 @@ def create_crew(stock_symbol, model_option, openai_api_key, groq_api_key):
             "7. Competitive landscape and {stock_symbol}'s market share.\n"
             "Use reputable financial websites for data."
         ),
-        expected_output='A detailed 150-word research report with data sources and brief analysis.',
-        agent=researcher
+        expected_output="A detailed 150-word research report with data sources and brief analysis.",
+        agent=researcher,
     )
 
     technical_analysis_task = Task(
@@ -106,8 +126,8 @@ def create_crew(stock_symbol, model_option, openai_api_key, groq_api_key):
             "7. Comparison with sector's average.\n"
             "Use the yf_tech_analysis tool for data."
         ),
-        expected_output='A 100-word technical analysis report with buy/sell/hold signals and annotated charts.',
-        agent=technical_analyst
+        expected_output="A 100-word technical analysis report with buy/sell/hold signals and annotated charts.",
+        agent=technical_analyst,
     )
 
     fundamental_analysis_task = Task(
@@ -123,8 +143,8 @@ def create_crew(stock_symbol, model_option, openai_api_key, groq_api_key):
             "8. DCF valuation model with assumptions.\n"
             "Use yf_fundamental_analysis tool for data."
         ),
-        expected_output='A 100-word fundamental analysis report with buy/hold/sell recommendation and key metrics summary.',
-        agent=fundamental_analyst
+        expected_output="A 100-word fundamental analysis report with buy/hold/sell recommendation and key metrics summary.",
+        agent=fundamental_analyst,
     )
 
     report_task = Task(
@@ -139,24 +159,29 @@ def create_crew(stock_symbol, model_option, openai_api_key, groq_api_key):
             "8. Investment Thesis: Bull and bear cases.\n"
             "9. Price Target: 12-month forecast.\n"
         ),
-        expected_output='A 600-word investment report with clear sections, key insights.',
-        agent=reporter
+        expected_output="A 600-word investment report with clear sections, key insights.",
+        agent=reporter,
     )
 
     # Crew Definition and Kickoff for Result
     crew = Crew(
         agents=[researcher, technical_analyst, fundamental_analyst, reporter],
-        tasks=[research_task, technical_analysis_task, fundamental_analysis_task, report_task],
+        tasks=[
+            research_task,
+            technical_analysis_task,
+            fundamental_analysis_task,
+            report_task,
+        ],
         process=Process.sequential,
-        cache=True
+        cache=True,
     )
 
-    result = crew.kickoff(inputs={'stock_symbol': stock_symbol})
+    result = crew.kickoff(inputs={"stock_symbol": stock_symbol})
 
-    os.makedirs('./crew_results', exist_ok=True)
+    os.makedirs("./crew_results", exist_ok=True)
     file_path = f"./crew_results/crew_result_{stock_symbol}.md"
     result_str = str(result)
-    with open(file_path, 'w') as file:
+    with open(file_path, "w") as file:
         file.write(result_str)
-    
+
     return file_path
