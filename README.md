@@ -8,7 +8,7 @@
 
 - **📈 Interactive Stock Chart**: Visualize stock price data along with key technical indicators.
 - **📊 Comprehensive Stock Analysis**: Get detailed reports on stock performance, including technical and fundamental analysis.
-- **🤖 Model Selection**: Choose from multiple language models (OpenAI GPT-4, Llama 3 8B, Groq Llama) for generating analysis reports.
+- **🤖 Model Selection**: Choose from multiple language models ( Sonnet 3.0, OpenAI GPT-4, Llama 3 8B, Groq Llama) for generating analysis reports.
 
 ## 🚀 Installation
 
@@ -31,6 +31,10 @@
    SERPER_API_KEY=your_serper_api_key
    OPENAI_API_KEY=your_openai_api_key
    GROQ_API_KEY=your_groq_api_key
+   AWS_REGION=us-west-2
+   AWS_S3_BUCKET_NAME=pdf-raw-documents
+   AWS_ACCESS_KEY_ID=your_aws_access_key_id
+   AWS_SECRET_ACCESS_KEY=your_aws_secret_access_key
    ```
 
 ## 🛠️ Usage
@@ -66,7 +70,7 @@ Storage bucket used to:
 
 ### Bedrock
 
-Service used with Claude Sonnet 3.0 to extract information from JSON files.
+Service used with Claude Sonnet 3.0 to run the crew of agents.
 
 ### ElasticSearch
 
