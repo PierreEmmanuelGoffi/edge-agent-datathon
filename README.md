@@ -2,7 +2,16 @@
 
 ## 🌟 Overview
 
-**Stock Analysis Dashboard** is a web application that allows users to analyze stocks using advanced machine learning models and financial tools. The application provides detailed insights into stock performance, technical analysis, fundamental analysis.
+**Stock Analysis** is a web application that allows users to analyze stocks using advanced machine learning models and financial tools. The application provides detailed insights into stock performance, technical analysis, fundamental analysis.
+
+The analysis is conducted using a crew-based agent architecture, with a team consisting of:
+
+- Senior Stock Market Researcher
+- Senior Fundamental Analyst
+- Expert Technical Analyst
+- Chief Investment Strategist
+
+These agents work together to analyze a ticker and produce the most comprehensive report possible. This structure is, of course, adaptable to the investment standards and theses of each bank or investor.
 
 ## ✨ Features
 
