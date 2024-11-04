@@ -2,7 +2,7 @@
 
 ## 🌟 Overview
 
-**Stock Analysis Dashboard** is a web application that allows users to analyze stocks using advanced machine learning models and financial tools. The application provides detailed insights into stock performance, technical analysis, fundamental analysis, and sentiment analysis from various sources.
+**Stock Analysis Dashboard** is a web application that allows users to analyze stocks using advanced machine learning models and financial tools. The application provides detailed insights into stock performance, technical analysis, fundamental analysis.
 
 ## ✨ Features
 
@@ -53,10 +53,47 @@
 
 4. Click the "Analyze Stock" button to generate the report and visualize the stock data.
 
+## 🏗️ AWS Architecture
+
+Our AWS architecture consists of the following components:
+
+### S3
+
+Storage bucket used to:
+
+- Store images in PNG format
+- Extract information in JSON format
+
+### Bedrock
+
+Service used with Claude Sonnet 3.0 to extract information from JSON files.
+
+### ElasticSearch
+
+Used to extract and process information more quickly.
+
+### CloudWatch
+
+Monitoring service that allows:
+
+- Validation of proper tool functioning
+- Cost reduction
+- Process acceleration
+
+### IAM
+
+Access management for different services based on the "least privilege" principle.
+
+The data flow goes through two Lambda functions:
+
+1. PngToPdf: For initial conversion
+2. Extract Data from Png: For data extraction
+
+![AWS Architecture](./AWS_Architecture.png)
+
 ### Application Structure
 
 - `app.py`: Contains the Streamlit application code for the user interface.
-- `main.py`: Defines the CrewAI agents, tasks, and processes for generating stock analysis reports.
 - `tools/`: Contains custom tools for sentiment analysis and financial data retrieval.
 
 ### Sources
