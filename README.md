@@ -13,6 +13,11 @@ The analysis is conducted using a crew-based agent architecture, with a team con
 
 These agents work together to analyze a ticker and produce the most comprehensive report possible. This structure is, of course, adaptable to the investment standards and theses of each bank or investor.
 
+## ⚙️ Démo
+
+[Accès à la version en ligne
+](https://edge-agent-datathon.onrender.com/) (Serveur très lent, car gratuit)
+
 ## ✨ Features
 
 - **📈 Interactive Stock Chart**: Visualize stock price data along with key technical indicators.
